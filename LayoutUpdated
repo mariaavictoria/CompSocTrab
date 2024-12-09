@@ -1,0 +1,2882 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+void main() {
+  runApp(LoginApp());
+}
+
+class LoginApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Login Page',
+      home: LoginPage(),
+      routes: {
+        '/register': (context) => RegisterPage(),
+        '/emprestimo': (context) => SolicitarEmprestimoPage(),
+      },
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void _login() {
+    _cpfController.text == '1'
+        ? Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoggedPage(),
+            ),
+          )
+        : Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdmPage(),
+            ),
+          );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.lime[50],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 200.0),
+              child: Column(children: [
+                Stack(children: [
+                  Positioned(
+                    bottom: 1,
+                    child: Container(
+                      height: 2,
+                      width: 500,
+                      color: Colors.green[800],
+                    ),
+                  ),
+                  Text(
+                    'JARDIM BOTÂNICO',
+                    style: GoogleFonts.quicksand(
+                      textStyle:
+                          TextStyle(fontSize: 52, color: Colors.green[800]),
+                    ),
+                  )
+                ]),
+                SizedBox(height: 30),
+                Text(
+                  'ENTRAR',
+                  style: GoogleFonts.quicksand(
+                    textStyle:
+                        TextStyle(fontSize: 32, color: Colors.green[800]),
+                  ),
+                ),
+                SizedBox(height: 5)
+              ])),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 300.0),
+              child: Column(children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _cpfController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      hintText: 'CPF',
+                      hintStyle: TextStyle(
+                        color: Colors.green[800],
+                      ),
+                      suffixIcon: IconButton(
+                        color: Colors.green[800],
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _cpfController.clear();
+                        },
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                    ),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Senha',
+                      hintStyle: TextStyle(
+                        color: Colors.green[800],
+                      ),
+                      suffixIcon: IconButton(
+                        color: Colors.green[800],
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _passwordController.clear();
+                        },
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                    ),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+                SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green[700],
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                  child: Text('Entrar'),
+                ),
+                SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green[700],
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                  child: Text('Criar Conta'),
+                )
+              ])),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _cpfController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+}
+
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  String? _selectedOption;
+
+  void _register() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Conta Criada com Sucesso!"),
+          content: Text("Deseja entrar na sua conta?"),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green[700],
+                foregroundColor: Colors.white,
+                shadowColor: Colors.black,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+              child: Text('Entrar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.lime[50]),
+      backgroundColor: Colors.lime[50],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 200.0),
+              child: Column(children: [
+                Stack(children: [
+                  Positioned(
+                    bottom: 1,
+                    child: Container(
+                      height: 2,
+                      width: 500,
+                      color: Colors.green[800],
+                    ),
+                  ),
+                  Text(
+                    'JARDIM BOTÂNICO',
+                    style: GoogleFonts.quicksand(
+                      textStyle:
+                          TextStyle(fontSize: 52, color: Colors.green[800]),
+                    ),
+                  )
+                ]),
+                SizedBox(height: 50),
+                Text(
+                  'CRIAR CONTA',
+                  style: GoogleFonts.quicksand(
+                    textStyle:
+                        TextStyle(fontSize: 32, color: Colors.green[800]),
+                  ),
+                ),
+                SizedBox(height: 5)
+              ])),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 100.0),
+              child: Column(children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                      labelText: 'Nome Completo',
+                      labelStyle: TextStyle(
+                        color: Colors.green[800],
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 2),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 3),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2),
+                      ),
+                      focusedErrorBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.red[800]!, width: 3),
+                      )),
+                  style: const TextStyle(fontSize: 16),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira seu nome';
+                    } else if (value.length < 3) {
+                      return 'Por favor, insira seu nome completo';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+                Row(children: [
+                  Expanded(
+                      child: TextFormField(
+                    controller: _phoneController,
+                    decoration: InputDecoration(
+                        labelText: 'Telefone',
+                        labelStyle: TextStyle(
+                          color: Colors.green[800],
+                        ),
+                        hintText: 'Apenas números e com código da região',
+                        hintStyle: TextStyle(color: Colors.green[800]),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.green[800]!, width: 2),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.green[800]!, width: 3),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.red[800]!, width: 3),
+                        )),
+                    style: const TextStyle(fontSize: 16),
+                    keyboardType: TextInputType.phone,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira seu telefone';
+                      } else if (value.length < 11) {
+                        return 'Por favor, insira seu telefone com código da região';
+                      }
+                      return null;
+                    },
+                  )),
+                  SizedBox(width: 40),
+                  Expanded(
+                      child: DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                        labelText: 'Gênero',
+                        labelStyle: TextStyle(
+                          color: Colors.green[800],
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.green[800]!, width: 2),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.green[800]!, width: 3),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.red[800]!, width: 3),
+                        )),
+                    style: const TextStyle(fontSize: 16),
+                    value: _selectedOption,
+                    items: ['Feminino', 'Masculino', 'Outro']
+                        .map((option) => DropdownMenuItem(
+                              value: option,
+                              child: Text(option),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedOption = value;
+                      });
+                    },
+                    validator: (value) =>
+                        value == null ? 'Por favor, selecione uma opção' : null,
+                  )),
+                ]),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: _cpfController,
+                  decoration: InputDecoration(
+                      labelText: 'CPF',
+                      labelStyle: TextStyle(
+                        color: Colors.green[800],
+                      ),
+                      hintText: 'Apenas números',
+                      hintStyle: TextStyle(color: Colors.green[800]),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 2),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 3),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2),
+                      ),
+                      focusedErrorBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.red[800]!, width: 3),
+                      )),
+                  style: const TextStyle(fontSize: 16),
+                  keyboardType: TextInputType.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira seu CPF';
+                    } else if (value.length < 11) {
+                      return 'Por favor, insira um CPF válido';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(
+                        color: Colors.green[800],
+                      ),
+                      hintText: 'exemplo@exemplo.com',
+                      hintStyle: TextStyle(color: Colors.green[800]),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 2),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 3),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2),
+                      ),
+                      focusedErrorBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.red[800]!, width: 3),
+                      )),
+                  style: const TextStyle(fontSize: 16),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira seu email';
+                    } else if (!value.contains('@') ||
+                        !value.contains('.com') ||
+                        !value.contains('.')) {
+                      return 'Por favor, insira um email válido';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                      labelText: 'Senha',
+                      labelStyle: TextStyle(
+                        color: Colors.green[800],
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 2),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 3),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2),
+                      ),
+                      focusedErrorBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.red[800]!, width: 3),
+                      )),
+                  obscureText: true,
+                  style: const TextStyle(fontSize: 16),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira sua senha';
+                    } else if (value.length < 8) {
+                      return 'A senha deve ter no mínimo 6 caracteres';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 32),
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  decoration: InputDecoration(
+                      labelText: 'Confirmar senha',
+                      labelStyle: TextStyle(
+                        color: Colors.green[800],
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 2),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.green[800]!, width: 3),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2),
+                      ),
+                      focusedErrorBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.red[800]!, width: 3),
+                      )),
+                  obscureText: true,
+                  style: const TextStyle(fontSize: 16),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, confirme sua senha';
+                    } else if (_confirmPasswordController.text !=
+                        _passwordController.text) {
+                      return 'A confirmação deve ser igual à senha';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: () {
+                    _register();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green[700],
+                    foregroundColor: Colors.white,
+                    shadowColor: Colors.black,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                  child: Text('Criar Conta'),
+                )
+              ]))
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+}
+
+class LoggedPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green[800],
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green[800],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child:
+                        Icon(Icons.person, size: 40, color: Colors.green[800]),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Daniel Pereira',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Conta Jardim Botânico',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                'Sair da Conta',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/emprestimo');
+              },
+              icon: Icon(Icons.add, size: 28),
+              label: Text(
+                'Solicitar Novo Empréstimo',
+                style: TextStyle(fontSize: 20),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green[800],
+                foregroundColor: Colors.white,
+                shadowColor: Colors.black,
+                elevation: 5,
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return LoanInfoBox(
+                    value: 'R\$ 1.000,00',
+                    contractNumber: 'BCDJB000004',
+                    currency: 'Real',
+                    reason: 'Compra de Equipamento',
+                    agent: 'Daniel Pereira',
+                    date: '25/11/2024',
+                    status: 'Aprovado',
+                    paidInstallments: '5 de 12',
+                    installmentValue: 'R\$ 150,00',
+                    onPayInstallment: () {},
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LoanInfoBox extends StatelessWidget {
+  final String value;
+  final String contractNumber;
+  final String currency;
+  final String reason;
+  final String agent;
+  final String date;
+  final String status;
+  final String paidInstallments;
+  final String installmentValue;
+  final VoidCallback onPayInstallment;
+
+  LoanInfoBox({
+    required this.value,
+    required this.contractNumber,
+    required this.currency,
+    required this.reason,
+    required this.agent,
+    required this.date,
+    required this.status,
+    required this.paidInstallments,
+    required this.installmentValue,
+    required this.onPayInstallment,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Empréstimo de $reason',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
+          ),
+          SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow('Número do Contrato:', contractNumber),
+                    _buildInfoRow('Agente:', agent),
+                    _buildInfoRow('Data:', date),
+                  ],
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow('Moeda:', currency),
+                    _buildInfoRow('Valor:', value),
+                    _buildInfoRow(
+                      'Situação:',
+                      status,
+                      valueColor:
+                          status == 'Aprovado' ? Colors.green : Colors.red,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow('Parcelas Pagas:', paidInstallments),
+                    _buildInfoRow('Valor da Parcela:', installmentValue),
+                    SizedBox(height: 10),
+                    ElevatedButton.icon(
+                      onPressed: onPayInstallment,
+                      icon: Icon(Icons.attach_money_sharp, size: 18),
+                      label: Text(
+                        'Pagar Parcela',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green[800],
+                        foregroundColor: Colors.white,
+                        shadowColor: Colors.black,
+                        elevation: 5,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
+        ]),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String title, String value, {Color? valueColor}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
+          ),
+          SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: valueColor ?? Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SolicitarEmprestimoPage extends StatefulWidget {
+  @override
+  _SolicitarEmprestimoPageState createState() =>
+      _SolicitarEmprestimoPageState();
+}
+
+class _SolicitarEmprestimoPageState extends State<SolicitarEmprestimoPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _cpfController = TextEditingController();
+  final TextEditingController _valorController = TextEditingController();
+  final TextEditingController _motivoController = TextEditingController();
+  String? _selectedMoeda;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Solicitar Novo Empréstimo'),
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.green[800],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Column(
+          children: [
+            SizedBox(height: 16),
+            Text(
+              'PREENCHA O FORMULÁRIO PARA SOLICITAÇÃO DO EMPRÉSTIMO',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.quicksand(
+                textStyle: TextStyle(
+                  fontSize: 32,
+                  color: Colors.green[800],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 100.0),
+                  children: [
+                    _buildCustomTextField(
+                      controller: _nomeController,
+                      label: 'Nome Completo',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira seu nome';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: _buildCustomTextField(
+                            controller: _cpfController,
+                            label: 'CPF',
+                            hint: 'Apenas números',
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Por favor, insira seu CPF';
+                              }
+                              if (value.length != 11) {
+                                return 'O CPF deve conter 11 dígitos';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          flex: 3,
+                          child: _buildCustomDropdown(
+                            label: 'Moeda Emprestada',
+                            value: _selectedMoeda,
+                            items: ['Real', 'Orquídea'],
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedMoeda = value;
+                              });
+                            },
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Por favor, selecione uma moeda';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    _buildCustomTextField(
+                      controller: _valorController,
+                      label: 'Valor do Empréstimo',
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira o valor do empréstimo';
+                        }
+                        final double? valor = double.tryParse(value);
+                        if (valor == null || valor <= 0) {
+                          return 'Por favor, insira um valor válido';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    _buildCustomTextField(
+                      controller: _motivoController,
+                      label: 'Motivo do Empréstimo',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira o motivo do empréstimo';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              textStyle: TextStyle(fontSize: 16),
+                            ),
+                            child: Text('Cancelar'),
+                          ),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Empréstimo solicitado com sucesso!',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[800],
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              textStyle: TextStyle(fontSize: 16),
+                            ),
+                            child: Text('Solicitar Empréstimo'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCustomTextField({
+    required TextEditingController controller,
+    required String label,
+    String? hint,
+    TextInputType? keyboardType,
+    required String? Function(String?) validator,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.grey[700]),
+          hintText: hint,
+          hintStyle: TextStyle(color: Colors.grey[600]),
+          filled: true,
+          fillColor: Colors.white,
+          border: _buildRoundedBorder(),
+          enabledBorder: _buildRoundedBorder(),
+          focusedBorder: _buildRoundedBorder(color: Colors.grey[700]),
+          errorBorder: _buildRoundedBorder(color: Colors.red),
+          focusedErrorBorder: _buildRoundedBorder(color: Colors.red),
+          contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        ),
+        validator: validator,
+      ),
+    );
+  }
+
+  Widget _buildCustomDropdown({
+    required String label,
+    required List<String> items,
+    String? value,
+    required void Function(String?) onChanged,
+    required String? Function(String?) validator,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: DropdownButtonFormField<String>(
+        value: value,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.grey[700]),
+          filled: true,
+          fillColor: Colors.white,
+          border: _buildRoundedBorder(),
+          enabledBorder: _buildRoundedBorder(),
+          focusedBorder: _buildRoundedBorder(color: Colors.grey[700]),
+          contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        ),
+        items: items
+            .map((item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(item),
+                ))
+            .toList(),
+        onChanged: onChanged,
+        validator: validator,
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildRoundedBorder({Color? color}) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(
+        color: color ?? Colors.grey,
+        width: 1,
+      ),
+    );
+  }
+}
+
+class AdmPage extends StatefulWidget {
+  @override
+  _AdmPageState createState() => _AdmPageState();
+}
+
+class _AdmPageState extends State<AdmPage> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    GenEmpreendimentosPage(),
+    GenContasPage(),
+    GenEmprestimosPage(),
+    StatisticsPage(),
+    CashFlowPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        elevation: 5,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.grey[200],
+        selectedItemColor: Colors.green[600],
+        unselectedItemColor: Colors.grey[700],
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Empreendimentos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.group),
+            label: 'Clientes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.description),
+            label: 'Empréstimos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.sync_alt),
+            label: 'Circulação de Moedas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.currency_exchange),
+            label: 'Fluxo de Caixa',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class GenEmpreendimentosPage extends StatefulWidget {
+  @override
+  _GenEmpreendimentosPageState createState() => _GenEmpreendimentosPageState();
+}
+
+class _GenEmpreendimentosPageState extends State<GenEmpreendimentosPage> {
+  final List<Map<String, String>> _contas = [
+    {
+      'email': 'tutusoftltda@gmail.com',
+      'phone': '(21) 99999-9999',
+      'compromise': 'Desconto na Venda',
+      'cnpj': '00.623.904/0001-73',
+      'name': 'Tutu Soft LTDA',
+    },
+    {
+      'email': 'tutusoft@gmail.com',
+      'phone': '(21) 99999-9999',
+      'compromise': 'Desconto na Troca',
+      'cnpj': '00.623.904/0001-73',
+      'name': 'Tutu Turbo',
+    },
+  ];
+
+  List<Map<String, String>> _filteredContas = [];
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredContas = _contas;
+    _searchController.addListener(_filterContas);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterContas() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredContas = _contas
+          .where((conta) => conta['name']!.toLowerCase().contains(query))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Empreedimentos Filiados'),
+        backgroundColor: Colors.green[800],
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green[800],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child:
+                        Icon(Icons.person, size: 40, color: Colors.green[800]),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Daniel Pereira',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Conta Jardim Botânico',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                'Sair da Conta',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Pesquisar Empreendimentos Filiados',
+                labelStyle: TextStyle(
+                  color: Colors.grey[700],
+                ),
+                prefixIcon: Icon(Icons.search),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey[700]!, width: 2),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey[700]!),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: _filteredContas.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _filteredContas.length,
+                      itemBuilder: (context, index) {
+                        final conta = _filteredContas[index];
+                        return InfoBox4(
+                          email: conta['email']!,
+                          phone: conta['phone']!,
+                          compromise: conta['compromise']!,
+                          name: conta['name']!,
+                          cnpj: conta['cnpj']!,
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        'Nenhuma conta encontrada',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InfoBox4 extends StatelessWidget {
+  final String email;
+  final String phone;
+  final String compromise;
+  final String name;
+  final String cnpj;
+
+  InfoBox4({
+    required this.email,
+    required this.phone,
+    required this.compromise,
+    required this.name,
+    required this.cnpj,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('CNPJ:', cnpj, icon: Icons.account_circle),
+                      _buildInfoRow('Telefone:', phone, icon: Icons.phone),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('Email:', email, icon: Icons.email),
+                      _buildInfoRow('Compromisso:', compromise,
+                          icon: Icons.article_rounded),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => {},
+                  icon: Icon(Icons.edit, size: 18),
+                  label: Text(
+                    'Editar Dados',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[600],
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () => {},
+                  icon: Icon(Icons.clear, size: 18),
+                  label: Text(
+                    'Cancelar Conta',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red[600],
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String title, String value,
+      {IconData? icon, Color? valueColor}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (icon != null) Icon(icon, size: 20, color: Colors.grey[600]),
+          SizedBox(width: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
+          ),
+          SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: valueColor ?? Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class GenContasPage extends StatefulWidget {
+  @override
+  _GenContasPageState createState() => _GenContasPageState();
+}
+
+class _GenContasPageState extends State<GenContasPage> {
+  final List<Map<String, String>> _contas = [
+    {
+      'email': 'tutu@gmail.com',
+      'phone': '(21) 99999-9999',
+      'gender': 'Feminino',
+      'cpf': '123.123.123-14',
+      'name': 'Tutu',
+    },
+    {
+      'email': 'tututurbo@gmail.com',
+      'phone': '(21) 99999-9999',
+      'gender': 'Masculino',
+      'cpf': '124.124.124-14',
+      'name': 'Tutu Turbo',
+    },
+    {
+      'email': 'tutu3@gmail.com',
+      'phone': '(21) 99999-9999',
+      'gender': 'Outro',
+      'cpf': '125.125.125-14',
+      'name': 'Tutu III',
+    },
+  ];
+
+  List<Map<String, String>> _filteredContas = [];
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredContas = _contas;
+    _searchController.addListener(_filterContas);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterContas() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredContas = _contas
+          .where((conta) => conta['name']!.toLowerCase().contains(query))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Clientes Filiados'),
+        backgroundColor: Colors.green[800],
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green[800],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child:
+                        Icon(Icons.person, size: 40, color: Colors.green[800]),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Daniel Pereira',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Conta Jardim Botânico',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                'Sair da Conta',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Pesquisar Clientes Filiados',
+                labelStyle: TextStyle(
+                  color: Colors.grey[700],
+                ),
+                prefixIcon: Icon(Icons.search),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey[700]!, width: 2),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey[700]!),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: _filteredContas.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _filteredContas.length,
+                      itemBuilder: (context, index) {
+                        final conta = _filteredContas[index];
+                        return InfoBox3(
+                          email: conta['email']!,
+                          phone: conta['phone']!,
+                          gender: conta['gender']!,
+                          name: conta['name']!,
+                          cpf: conta['cpf']!,
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        'Nenhuma conta encontrada',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class InfoBox3 extends StatelessWidget {
+  final String email;
+  final String phone;
+  final String gender;
+  final String name;
+  final String cpf;
+
+  InfoBox3({
+    required this.email,
+    required this.phone,
+    required this.gender,
+    required this.name,
+    required this.cpf,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('CPF:', cpf, icon: Icons.account_circle),
+                      _buildInfoRow('Telefone:', phone, icon: Icons.phone),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('Email:', email, icon: Icons.email),
+                      _buildInfoRow('Gênero:', gender, icon: Icons.person),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => {},
+                  icon: Icon(Icons.edit, size: 18),
+                  label: Text(
+                    'Editar Dados',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[600],
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () => {},
+                  icon: Icon(Icons.clear, size: 18),
+                  label: Text(
+                    'Cancelar Conta',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red[600],
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String title, String value,
+      {IconData? icon, Color? valueColor}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (icon != null) Icon(icon, size: 20, color: Colors.grey[600]),
+          SizedBox(width: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
+          ),
+          SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: valueColor ?? Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class GenEmprestimosPage extends StatefulWidget {
+  @override
+  _GenEmprestimosPageState createState() => _GenEmprestimosPageState();
+}
+
+class _GenEmprestimosPageState extends State<GenEmprestimosPage> {
+  final List<Map<String, String>> _loans = [
+    {
+      'reason': 'Compra de Equipamento',
+      'value': 'R\$ 1.000,00',
+      'contractNumber': 'BCDJB000001',
+      'currency': 'Real',
+      'interest': '2% ao mês',
+      'agent': 'Daniel Pereira',
+      'date': '25/11/2024',
+      'status': 'Aprovado',
+      'paidInstallments': '5 de 12',
+      'cpf_cnpj': '123.123.123-14',
+      'name': 'Tutu',
+    },
+    {
+      'reason': 'Reforma da Casa',
+      'value': 'R\$ 5.000,00',
+      'contractNumber': 'BCDJB000002',
+      'currency': 'Real',
+      'interest': '1.8% ao mês',
+      'agent': '',
+      'date': '10/10/2024',
+      'status': 'Pendente',
+      'paidInstallments': '0 de 24',
+      'cpf_cnpj': '00.623.904/0001-73',
+      'name': 'TutuSoft',
+    },
+    {
+      'reason': 'Alimentação',
+      'value': 'R\$ 400,00',
+      'contractNumber': 'BCDJB000003',
+      'currency': 'Orquídea',
+      'interest': '0% ao mês',
+      'agent': 'Daniel Pereira',
+      'date': '10/12/2024',
+      'status': 'Aprovado',
+      'paidInstallments': '5 de 24',
+      'cpf_cnpj': '00.623.904/0001-73',
+      'name': 'TutuSoft',
+    },
+  ];
+
+  List<Map<String, String>> _filteredLoans = [];
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredLoans = _loans; 
+    _searchController.addListener(_filterLoans);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterLoans() {
+    final query = _searchController.text.toLowerCase();
+    setState(() {
+      _filteredLoans = _loans
+          .where((loan) => loan['name']!.toLowerCase().contains(query))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Empréstimos'),
+        backgroundColor: Colors.green[800],
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green[800],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child:
+                        Icon(Icons.person, size: 40, color: Colors.green[800]),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Daniel Pereira',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Conta Jardim Botânico',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                'Sair da Conta',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                labelText: 'Pesquisar Empréstimos',
+                labelStyle: TextStyle(
+                  color: Colors.grey[700],
+                ),
+                prefixIcon: Icon(Icons.search),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey[700]!, width: 2),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide(color: Colors.grey[700]!),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: _filteredLoans.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _filteredLoans.length,
+                      itemBuilder: (context, index) {
+                        final loan = _filteredLoans[index];
+                        return LoanInfoBox2(
+                          value: loan['value']!,
+                          contractNumber: loan['contractNumber']!,
+                          currency: loan['currency']!,
+                          interest: loan['interest']!,
+                          reason: loan['reason']!,
+                          agent: loan['agent']!,
+                          date: loan['date']!,
+                          status: loan['status']!,
+                          paidInstallments: loan['paidInstallments']!,
+                          name: loan['name']!,
+                          cpfCnpj: loan['cpf_cnpj']!,
+                          onPayInstallment: () {
+                            print('Pagamento da parcela iniciado!');
+                          },
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        'Nenhum empréstimo encontrado',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LoanInfoBox2 extends StatelessWidget {
+  final String value;
+  final String contractNumber;
+  final String currency;
+  final String interest;
+  final String reason;
+  final String agent;
+  final String date;
+  final String status;
+  final String paidInstallments;
+  final String name;
+  final String cpfCnpj;
+  final VoidCallback onPayInstallment;
+
+  LoanInfoBox2({
+    required this.value,
+    required this.contractNumber,
+    required this.currency,
+    required this.interest,
+    required this.reason,
+    required this.agent,
+    required this.date,
+    required this.status,
+    required this.paidInstallments,
+    required this.name,
+    required this.cpfCnpj,
+    required this.onPayInstallment,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Empréstimo de $name',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[700],
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('Número do Contrato:', contractNumber),
+                      _buildInfoRow('Moeda:', currency),
+                      _buildInfoRow('Valor:', value),
+                      _buildInfoRow('Juros:', interest),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('CPF/CNPJ:', cpfCnpj),
+                      _buildInfoRow('Agente:', agent),
+                      _buildInfoRow('Data:', date),
+                      _buildInfoRow('Motivo:', reason),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('Parcelas Pagas:', paidInstallments),
+                      _buildInfoRow(
+                        'Situação:',
+                        status,
+                        valueColor:
+                            status == 'Aprovado' ? Colors.green : Colors.red,
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton.icon(
+                        onPressed: onPayInstallment,
+                        icon: Icon(Icons.arrow_outward_rounded, size: 18),
+                        label: Text(
+                          'Gerenciar Empréstimo',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[800],
+                          foregroundColor: Colors.white,
+                          shadowColor: Colors.black,
+                          elevation: 5,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String title, String value, {Color? valueColor}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
+          ),
+          SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: valueColor ?? Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class StatisticsPage extends StatefulWidget {
+  @override
+  _StatisticsPageState createState() => _StatisticsPageState();
+}
+
+class _StatisticsPageState extends State<StatisticsPage> {
+  final double totalValue = 50000.00;
+  final double circulatingValue = 35000.00;
+  final double nonCirculatingValue = 15000.00;
+  final int totalCoins = 1000;
+  final int circulatingCoins = 700;
+  final int nonCirculatingCoins = 300;
+
+  String selectedCurrency = 'O\$ 0.50';
+  final Map<String, Map<String, dynamic>> currencyData = {
+    'O\$ 0.50': {
+      'circulatingValue': 15000.00,
+      'nonCirculatingValue': 5000.00,
+      'circulatingCoins': 500,
+      'nonCirculatingCoins': 200,
+    },
+    'O\$ 1.00': {
+      'circulatingValue': 10000.00,
+      'nonCirculatingValue': 4000.00,
+      'circulatingCoins': 300,
+      'nonCirculatingCoins': 150,
+    },
+    'O\$ 2.00': {
+      'circulatingValue': 12000.00,
+      'nonCirculatingValue': 6000.00,
+      'circulatingCoins': 450,
+      'nonCirculatingCoins': 180,
+    },
+    'O\$ 5.00': {
+      'circulatingValue': 18000.00,
+      'nonCirculatingValue': 650.00,
+      'circulatingCoins': 350,
+      'nonCirculatingCoins': 80,
+    },
+    'O\$ 10.00': {
+      'circulatingValue': 16000.00,
+      'nonCirculatingValue': 6000.00,
+      'circulatingCoins': 250,
+      'nonCirculatingCoins': 100,
+    },
+    'O\$ 20.00': {
+      'circulatingValue': 12500.00,
+      'nonCirculatingValue': 5000.00,
+      'circulatingCoins': 220,
+      'nonCirculatingCoins': 180,
+    },
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final currentCurrencyData = currencyData[selectedCurrency]!;
+
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: Text('Circulação de Moedas'),
+        backgroundColor: Colors.green[800],
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green[800],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child:
+                        Icon(Icons.person, size: 40, color: Colors.green[800]),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Daniel Pereira',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Conta Jardim Botânico',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                'Sair da Conta',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                'Estatísticas',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ),
+            SizedBox(height: 24),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        _buildStatisticRow(
+                          title: 'Valor Total',
+                          value: 'O\$ ${totalValue.toStringAsFixed(2)}',
+                          icon: Icons.attach_money,
+                        ),
+                        _buildStatisticRow(
+                          title: 'Valor em Circulação',
+                          value: 'O\$ ${circulatingValue.toStringAsFixed(2)}',
+                          icon: Icons.account_balance_wallet,
+                        ),
+                        _buildStatisticRow(
+                          title: 'Valor Fora de Circulação',
+                          value:
+                              'O\$ ${nonCirculatingValue.toStringAsFixed(2)}',
+                          icon: Icons.remove_circle_outline,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        _buildStatisticRow(
+                          title: 'Total de Moedas',
+                          value: totalCoins.toString(),
+                          icon: Icons.monetization_on,
+                        ),
+                        _buildStatisticRow(
+                          title: 'Moedas em Circulação',
+                          value: circulatingCoins.toString(),
+                          icon: Icons.published_with_changes,
+                        ),
+                        _buildStatisticRow(
+                          title: 'Moedas Fora de Circulação',
+                          value: nonCirculatingCoins.toString(),
+                          icon: Icons.cancel,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 24),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: currencyData.keys.map((currency) {
+                  final isSelected = currency == selectedCurrency;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedCurrency = currency;
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color:
+                            isSelected ? Colors.green[800] : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: isSelected
+                            ? [
+                                BoxShadow(
+                                  color: Colors.green.withOpacity(0.5),
+                                  blurRadius: 8,
+                                  offset: Offset(0, 3),
+                                ),
+                              ]
+                            : [],
+                      ),
+                      child: Text(
+                        currency,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.grey[800],
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            SizedBox(height: 24),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Informações de ${selectedCurrency}',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  _buildInfoTile(
+                    title: 'Valor Circulante',
+                    value:
+                        'O\$ ${currentCurrencyData['circulatingValue'].toStringAsFixed(2)}',
+                  ),
+                  _buildInfoTile(
+                    title: 'Valor Não Circulante',
+                    value:
+                        'O\$ ${currentCurrencyData['nonCirculatingValue'].toStringAsFixed(2)}',
+                  ),
+                  _buildInfoTile(
+                    title: 'Moedas em Circulação',
+                    value: currentCurrencyData['circulatingCoins'].toString(),
+                  ),
+                  _buildInfoTile(
+                    title: 'Moedas Fora de Circulação',
+                    value:
+                        currentCurrencyData['nonCirculatingCoins'].toString(),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 16),
+                    alignment: Alignment.center,
+                    child: ElevatedButton.icon(
+                      onPressed: () => {},
+                      icon: Icon(Icons.add),
+                      label: Text('Criar Moeda'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green[800],
+                        foregroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatisticRow({
+    required String title,
+    required String value,
+    required IconData icon,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 24, color: Colors.grey[600]),
+          SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoTile({required String title, required String value}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[700],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CashFlowPage extends StatefulWidget {
+  @override
+  _CashFlowPageState createState() => _CashFlowPageState();
+}
+
+class _CashFlowPageState extends State<CashFlowPage> {
+  DateTime selectedDate = DateTime.now();
+  bool showForm = false;
+
+  final TextEditingController openingXController = TextEditingController();
+  final TextEditingController entryXController = TextEditingController();
+  final TextEditingController exitXController = TextEditingController();
+  final TextEditingController closingXController = TextEditingController();
+  final TextEditingController openingRealController = TextEditingController();
+  final TextEditingController entryRealController = TextEditingController();
+  final TextEditingController exitRealController = TextEditingController();
+  final TextEditingController closingRealController = TextEditingController();
+
+  double reservePercentageOrq = 40.0;
+  double reservePercentageReal = 60.0;
+
+  void _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData(
+            colorScheme: ColorScheme.light(
+              primary: Colors.green,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+        showForm = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(
+        title: Text('Fluxo de Caixa'),
+        backgroundColor: Colors.green[800],
+        foregroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green[800],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.white,
+                    child:
+                        Icon(Icons.person, size: 40, color: Colors.green[800]),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Daniel Pereira',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Conta Jardim Botânico',
+                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                'Sair da Conta',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Text(
+                    'Relação Orquídea x Real',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Stack(
+                    children: [
+                      Container(
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: (reservePercentageReal * 10).toInt(),
+                            child: Container(
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(16),
+                                  bottomLeft: Radius.circular(16),
+                                  topRight: reservePercentageReal == 100
+                                      ? Radius.circular(16)
+                                      : Radius.zero,
+                                  bottomRight: reservePercentageReal == 100
+                                      ? Radius.circular(16)
+                                      : Radius.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: (reservePercentageOrq * 10).toInt(),
+                            child: Container(
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(16),
+                                  bottomRight: Radius.circular(16),
+                                  topLeft: reservePercentageOrq == 100
+                                      ? Radius.circular(16)
+                                      : Radius.zero,
+                                  bottomLeft: reservePercentageOrq == 100
+                                      ? Radius.circular(16)
+                                      : Radius.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Real: ${reservePercentageReal.toStringAsFixed(1)}%',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                      Text(
+                        'Orquídea: ${reservePercentageOrq.toStringAsFixed(1)}%',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 24),
+            Text(
+              'Atualizar Fluxo de Caixa',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: GestureDetector(
+                      onTap: () => _selectDate(context),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                                onTap: () => _selectDate(context),
+                                child: Text(
+                                  DateFormat('dd/MM/yyyy').format(selectedDate),
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[800]),
+                                )),
+                            GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: Icon(Icons.calendar_today,
+                                  color: Colors.green[800]),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+                SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      showForm = true;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    backgroundColor: Colors.green[800],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    'Atualizar',
+                    style: TextStyle(fontSize: 14, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 24),
+            if (showForm)
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Orquídea',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 16),
+                        _buildInputField(
+                            'Valor de Abertura', openingXController),
+                        _buildInputField('Entrada', entryXController),
+                        _buildInputField('Saída', exitXController),
+                        _buildInputField(
+                            'Valor de Fechamento', closingXController),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Real',
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 16),
+                        _buildInputField(
+                            'Valor de Abertura', openingRealController),
+                        _buildInputField('Entrada', entryRealController),
+                        _buildInputField('Saída', exitRealController),
+                        _buildInputField(
+                            'Valor de Fechamento', closingRealController),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            SizedBox(height: 24),
+            if (showForm)
+              Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      backgroundColor: Colors.green[800],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Text(
+                      'Atualizar Fluxo',
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                  )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            color: Colors.grey[700],
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: Colors.grey[700]!, width: 2),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: Colors.grey[700]!),
+          ),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+      ),
+    );
+  }
+}
